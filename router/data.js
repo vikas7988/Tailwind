@@ -1,5 +1,5 @@
 const express = require('express');
-const getServiceData = require('../controller/serviceData');
+const {getServiceData,getNameData} = require('../controller/serviceData');
 const router = express.Router();
 
 function convertToTitleCase(name) {
@@ -14,6 +14,20 @@ router.get("/:name", async (req, res) => {
         name = convertToTitleCase(name);
 
         const data = await getServiceData(name);
+
+        if (!data) {
+            res.status(404).send('Data not found');
+        } else {
+            res.send({ data });
+        }
+    } catch (error) {
+        console.error('Error occurred in the route:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+router.get("/", async (req, res) => {
+    try {
+        const data = await getNameData();
 
         if (!data) {
             res.status(404).send('Data not found');

@@ -8,5 +8,17 @@ console.log(nm)
 
 
     }
+    async function getNameData(){
 
-    module.exports = getServiceData
+       const myId =  Math.floor(Math.random() * 10) + 1
+       console.log(myId)
+    const data =  await  figmas.aggregate([{ $sample: { size: myId } }]);
+
+    const myData = await data.map((el)=>(el.name))
+
+    return myData
+
+
+    }
+
+    module.exports = {getServiceData, getNameData}
